@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import Register from './screens/Register';
+import Login from './screens/Login';
+import Home from './screens/Home';
+import Layout from './screens/Layout';
+import Missing from './screens/Missing';
+import Unauthorized from './screens/Unauthorized';
+import LinkPage from './screens/LinkPage';
+import RequireAuth from './screens/RequireAuth';
+import { Routes, Route } from 'react-router-dom';
+
+// All file structure is from  https://youtu.be/oUZjO00NkhY
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* public routes */}
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="linkpage" element={<LinkPage />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
+
+        {/* we want to protect these routes */}
+        <Route element={<RequireAuth  />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+
+        {/* catch all */}
+        <Route path="*" element={<Missing />} />
+      </Route>
+    </Routes>
   );
 }
 
