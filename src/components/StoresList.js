@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { STORES_URL } from "../constants/network";
+import StoreItem from "./StoreItem";
 
 const StoresList = () => {
     const [stores, setStores] = useState();
@@ -53,15 +54,20 @@ const StoresList = () => {
         }
     }
 
+    //{stores.map((store,i) =>  <StoreItem key={i}  details={store}/>  )}
+
     return (
         <article>
             <h2>Stores List</h2>
-            {stores?.length
+            { stores?.length
                 ? (
                     <ul>
-                        {stores.map((store, i) => <li key={i}>{store?.name}</li>)}
-                    </ul>
-                ) : <p>No to display</p>
+                    {stores.map((store) => 
+                        <li key={store?.id}> <StoreItem key={store?.id}  store={store}/></li>
+                     )}
+                     </ul>
+                ) : <p> No Stores. Please add stores </p>
+
             }
             <br />
             <button onClick={getStoresDetail}>Store Detial</button>

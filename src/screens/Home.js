@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
-import StoresList from "./StoresList";
+import StoresList from "../components/StoresList";
 
 const Home = () => {
     const { setAuth } = useContext(AuthContext);

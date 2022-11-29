@@ -1,6 +1,7 @@
 import Register from './screens/Register';
 import Login from './screens/Login';
 import Home from './screens/Home';
+import Store from './screens/Store'
 import Layout from './screens/Layout';
 import Missing from './screens/Missing';
 import Unauthorized from './screens/Unauthorized';
@@ -24,6 +25,7 @@ function App() {
         {/* we want to protect these routes */}
         <Route element={<RequireAuth  />}>
           <Route path="/" element={<Home />} />
+          <Route path="/store/:id/" element={<Store />} />
         </Route>
 
         {/* catch all */}
