@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
-//import { useCookies } from "react-cookie";
+import { useParams } from "react-router-dom";
 //import Navbar from "../components/Navbar.js";
 import Button from "../components/Button.js";
+import useStores from "../hooks/useStores.js";
+import GroceryItem from "../components/GroceryItem.js";
 
-const  Store = (props) =>  {
-  //const [store, setStore] = useState({});
-  //const params = useParams();
-  const { store } = props; // this works too
-  console.log("&&&&&&&&",store);
+const  Store = () =>  {
+  const {id} = useParams();
+  const { stores} = useStores();
+  const [store, setStore] = useState({});
+  const [groceries, setGroceries ] = useState([]);
 
-  //const location = useLocation();
+  useEffect(() => {
+    const  currentStore = stores.find( (store) => {
+      console.log("store in find $$$$$",store);
+      console.log("store id in find !!!!!", store.id);
+      return store.id === Number(id)
+    });
+    setStore(currentStore);
+    setGroceries(currentStore?.groceries);
+    console.log("params id %%%%%", id);
+    console.log("store &&&&&&&",store);
+    console.log("currentStore ******", currentStore);
+  }, []);
 
   //   console.log(`json ${JSON.stringify(params)}`);
   //   console.log(`id ${params.id}`);
@@ -19,39 +31,39 @@ const  Store = (props) =>  {
 
 
   function handleDeleteClick() {
-    // remove(`api/mail/${params.id}/`)
-    //   .then((data) => {
-    //     console.log(data);
-    //     window.location.href = "/mail/inbox/";
-    //   })
-    //   .catch((error) => {
-    //     console.log(`something is wrong ${error}`);
-    //   });
   }
 
-  function handleArchiveClick() {
-    // const newMail = { ...mail, archived: true };
-    // put(`api/mail/${params.id}/`, newMail)
-    //   .then((data) => {
-    //     console.log(data);
-    //     window.location.href = "/mail/inbox/";
-    //   })
-    //   .catch((error) => {
-    //     console.log(`something is wrong ${error}`);
-    //   });
+  const handleCompleteClick = () => {
+
   }
 
   return (
     <div className="mailDetail">
-      <h1 className="subject">store.name</h1>
+      <h1 className="subject">{store?.name}</h1>
       <div className="senderInfo">
-        <p className="sender">store.id</p>
+        <p className="sender">{store?.id}</p>
       </div>
-      <p className="body">store.name</p>
+      <p className="body">{store?.name}</p>
+      { groceries?.length
+          ? (
+              <ul>
+              {groceries?.map((grocery) =>
+                  <li key={grocery?.id}>
+                  <GroceryItem key={grocery?.id} storeId={store?.id} grocery={grocery}/>
+                  </li>
+                )}
+                </ul>
+          ) : <p> No Stores. Please add stores </p>
+      }
+            <br />
+
+
+
+
       <Button className="buttonInactive" onClick={handleDeleteClick}>
         Delete
       </Button>
-      <Button onClick={handleArchiveClick} className="buttonInactive">
+      <Button onClick={handleCompleteClick} className="buttonInactive">
         Archive
       </Button>
     </div>

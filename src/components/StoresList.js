@@ -3,12 +3,14 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { STORES_URL } from "../constants/network";
 import StoreItem from "./StoreItem";
+import useStores from "../hooks/useStores";
 
 const StoresList = () => {
-    const [stores, setStores] = useState();
+    //const [stores, setStores] = useState();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const location = useLocation();
+    const { stores, setStores } = useStores();
 
     useEffect(() => {
         let isMounted = true;
@@ -38,22 +40,6 @@ const StoresList = () => {
         }
     }, [])
 
-    const getStoresDetail = async () => {
-        try {
-            // I don't know why django backend doesn't like signal: controller.signal
-            // I leave it here until I figure out.
-             //const response = await axiosPrivate.get(STORES_URL, {
-             //    signal: controller.signal
-             //});
-            const response = await axiosPrivate.get(`${STORES_URL}6`);
-            console.log(response.data);
-            //isMounted && setStores(response.data);
-        } catch (err) {
-            console.error(err);
-            navigate('/login', { state: { from: location }, replace: true });
-        }
-    }
-
     //{stores.map((store,i) =>  <StoreItem key={i}  details={store}/>  )}
 
     return (
@@ -62,15 +48,13 @@ const StoresList = () => {
             { stores?.length
                 ? (
                     <ul>
-                    {stores.map((store) => 
+                    {stores.map((store) =>
                         <li key={store?.id}> <StoreItem key={store?.id}  store={store}/></li>
                      )}
                      </ul>
                 ) : <p> No Stores. Please add stores </p>
 
             }
-            <br />
-            <button onClick={getStoresDetail}>Store Detial</button>
         </article>
     );
 };
