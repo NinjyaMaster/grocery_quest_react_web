@@ -53,7 +53,7 @@ const  Store = () =>  {
                   </li>
                 )}
                 </ul>
-          ) : <p> No Stores. Please add stores </p>
+          ) : <p> No Grocery. Please add groceries </p>
       }
             <br />
 
