@@ -40,10 +40,13 @@ const StoresList = () => {
         }
     }, [])
 
-    //{stores.map((store,i) =>  <StoreItem key={i}  details={store}/>  )}
+    const handleAddStore = () => {
+        navigate('/add_store', { state: {from: location}, replace:true });
+    }
 
     return (
         <article>
+            <button onClick={handleAddStore}>Add Store</button>
             <h2>Stores List</h2>
             { stores?.length
                 ? (
