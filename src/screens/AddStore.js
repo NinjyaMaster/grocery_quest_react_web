@@ -4,11 +4,10 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { STORES_URL } from "../constants/network";
 import axios from '../api/axios';
 import useAuth from "../hooks/useAuth";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 const AddStore = () => {
-    const { axiosPrivate } = useAxiosPrivate();
-    const { addStore } = useStores();
     const { auth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -18,13 +17,14 @@ const AddStore = () => {
     const [ groceryQty1, setGroceryQty1 ] = useState(1);
     const [groceryName2, setGroceryName2 ] = useState("");
     const [groceryQty2, setGroceryQty2] = useState(1);
-    const [errMsg, setErrMsg] = useState('');    
+    const [errMsg, setErrMsg] = useState('');
 
-    const STORE_GROCERY_REGEX = /^[A-z][A-z0-9]{2,20}$/;
+    const STORE_GROCERY_REGEX = /^[A-z][ A-z0-9]{2,20}[A-z0-9]$/;
+
+    const [ handlePostStore ] = useOutletContext();
 
     const handleAddStoreSubmit = async (e) =>{
         e.preventDefault();
-        console.log("&&&");
         let enternedGroceries = [];
 
         if(!STORE_GROCERY_REGEX.test(storeName)) {
@@ -56,37 +56,7 @@ const AddStore = () => {
         "is_completed": false,
         "groceries":enternedGroceries
         };
-
-        console.log("%%%%%%%",auth.accessToken);
-
-        try {
-            const response = await axios.post(
-                STORES_URL,
-                bodyParameters,
-                {headers: {"Authorization": `Bearer ${auth.accessToken}`}}
-            );            
-            // const response = await axiosPrivate.post(
-            //     `${STORES_URL}`,
-            //     bodyParameters
-            // );
-            console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
-            addStore(response.data);
-            navigate('/', { state: { from: location }, replace: true });
-
-          } catch (err) {
-            console.error("^^^^",err);
-              if (!err?.response) {
-                  setErrMsg('need another message');
-              } else if (err.response?.status === 400) {
-                  setErrMsg('need another message');
-              } else if (err.response?.status === 401) {
-                  setErrMsg('need another message');
-              } else {
-                  setErrMsg('need another message');
-              }
-          }
-
+        handlePostStore(bodyParameters);
     }
 
     return (
@@ -140,7 +110,8 @@ const AddStore = () => {
                 />                
                 <br></br>
                 <input type="submit" value="Submit" className="buttonInactive" />
-            </form>            
+            </form>
+            <Link to="/">Cancel</Link>       
         </div>
     ); 
 

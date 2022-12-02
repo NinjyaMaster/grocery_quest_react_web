@@ -1,5 +1,6 @@
 import Register from './screens/Register';
 import Login from './screens/Login';
+import StoresLayout from './screens/StoresLayout';
 import Home from './screens/Home';
 import Store from './screens/Store'
 import AddStore from './screens/AddStore';
@@ -25,9 +26,11 @@ function App() {
 
         {/* we want to protect these routes */}
         <Route element={<RequireAuth  />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/add_store" element={<AddStore />} />          
-          <Route path="/store/:id/" element={<Store />} />
+          <Route element={<StoresLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/add_store" element={<AddStore />} />          
+            <Route path="/store/:id/" element={<Store />} />
+          </Route>
         </Route>
 
         {/* catch all */}
