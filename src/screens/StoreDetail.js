@@ -4,37 +4,29 @@ import { useParams } from "react-router-dom";
 import Button from "../components/Button.js";
 import useStores from "../hooks/useStores.js";
 import GroceryItem from "../components/GroceryItem.js";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
-const  Store = () =>  {
-  const {id} = useParams();
+const  StoreDetail = () =>  {
+  const {storeId} = useParams();
   const { stores} = useStores();
   const [store, setStore] = useState({});
   const [groceries, setGroceries ] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const  currentStore = stores.find( (store) => {
-      console.log("store in find $$$$$",store);
-      console.log("store id in find !!!!!", store.id);
-      return store.id === Number(id)
+      return Number(store.id) === Number(storeId)
     });
     setStore(currentStore);
     setGroceries(currentStore?.groceries);
-    console.log("params id %%%%%", id);
-    console.log("store &&&&&&&",store);
-    console.log("currentStore ******", currentStore);
   }, []);
-
-  //   console.log(`json ${JSON.stringify(params)}`);
-  //   console.log(`id ${params.id}`);
-  //   console.log(`location : ${location.pathname}`);
-  //   console.log(`location json : ${JSON.stringify(location)}`);
-
 
   function handleDeleteClick() {
   }
 
-  const handleCompleteClick = () => {
-
+  const handleAddGroceriesClick = () => {
+    navigate(`/store/${storeId}/add_groceries/`, { state: { from: location }, replace: true });
   }
 
   return (
@@ -43,6 +35,7 @@ const  Store = () =>  {
       <div className="senderInfo">
         <p className="sender">{store?.id}</p>
       </div>
+      <Link to="/">Back</Link> 
       <p className="body">{store?.name}</p>
       { groceries?.length
           ? (
@@ -63,11 +56,11 @@ const  Store = () =>  {
       <Button className="buttonInactive" onClick={handleDeleteClick}>
         Delete
       </Button>
-      <Button onClick={handleCompleteClick} className="buttonInactive">
-        Archive
+      <Button onClick={handleAddGroceriesClick} className="buttonInactive">
+        Add Groceries
       </Button>
     </div>
   );
 }
 
-export default Store
+export default StoreDetail

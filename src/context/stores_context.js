@@ -23,7 +23,7 @@ function storesReducer(state, action){
             return [ action.payload , ...state];
         case 'ADD_GROCERIES':
             updatableStoreIndex = state.findIndex(
-                (store) => store.id === action.payload.storeId
+                (store) => Number(store.id) === Number(action.payload.storeId)
             );
             updatableStore = state[updatableStoreIndex];
             updatedStore = {...updatableStore};
@@ -35,7 +35,6 @@ function storesReducer(state, action){
             updatedStores[updatableStoreIndex] = updatedStore;
             return updatedStores;
         case 'SET':
-            console.log("^^^^^",action.payload);
             const inverted = action.payload.reverse();
             return inverted;
         case 'UPDATE':

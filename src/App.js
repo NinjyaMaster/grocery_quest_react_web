@@ -2,8 +2,9 @@ import Register from './screens/Register';
 import Login from './screens/Login';
 import StoresLayout from './screens/StoresLayout';
 import Home from './screens/Home';
-import Store from './screens/Store'
+import StoreDetail from './screens/StoreDetail'
 import AddStore from './screens/AddStore';
+import AddGroceries from './screens/AddGroceries';
 import Layout from './screens/Layout';
 import Missing from './screens/Missing';
 import Unauthorized from './screens/Unauthorized';
@@ -29,7 +30,8 @@ function App() {
           <Route element={<StoresLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/add_store" element={<AddStore />} />          
-            <Route path="/store/:id/" element={<Store />} />
+            <Route path="/store/:storeId/" element={<StoreDetail />} />
+            <Route path="/store/:storeId/add_groceries/" element={<AddGroceries />} />
           </Route>
         </Route>
 
