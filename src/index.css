@@ -8,7 +8,7 @@
 
 html {
     font-family: 'Nunito', sans-serif;
-    font-size: 22px;
+    font-size: 15px;
     color: #fff;
 }
 
@@ -54,14 +54,14 @@ input[type="password"],
 button,
 textarea {
   font-family: 'Nunito', sans-serif;
-  font-size: 22px;
-  padding: 0.25rem;
-  border-radius: 0.5rem;
+  font-size: 16px;
+  padding: 0.05rem;
+  border-radius: 1rem;
 }
 
 label,
 button {
-  margin-top: 1rem;
+  margin-top: 0.2rem;
 }
 
 button {
