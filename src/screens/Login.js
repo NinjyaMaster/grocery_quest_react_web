@@ -37,8 +37,6 @@ const Login = () => {
                     password: password,
                 } 
             );
-            console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
             const accessToken = response?.data?.tokens?.access;
             const refreshToken = response?.data?.tokens?.refresh;
             const username = response?.data?.username;

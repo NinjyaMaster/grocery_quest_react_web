@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { StoresContext } from "../context/stores_context";
+import { StoresContext } from "../context/StoresContextProvider";
 
 const useStores = () => {
     return useContext(StoresContext);

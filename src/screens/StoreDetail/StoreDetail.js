@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //import Navbar from "../components/Navbar.js";
-import Button from "../components/Button.js";
-import useStores from "../hooks/useStores.js";
-import GroceryItem from "../components/GroceryItem.js";
+import Button from "../../components/Button.js";
+import useStores from "../../hooks/useStores.js";
+import GroceryItem from "./GroceryItem.js";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 const  StoreDetail = () =>  {
   const {storeId} = useParams();
@@ -13,6 +14,13 @@ const  StoreDetail = () =>  {
   const [groceries, setGroceries ] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const [
+        handlePostStore, 
+        handlePatchGroceries, 
+        handleGetStores, 
+        handleDeleteStore, 
+        handleDeleteGrocery
+        ] = useOutletContext();
 
   useEffect(() => {
     const  currentStore = stores.find( (store) => {
@@ -20,9 +28,11 @@ const  StoreDetail = () =>  {
     });
     setStore(currentStore);
     setGroceries(currentStore?.groceries);
+    if(!currentStore) navigate(`/`, { state: { from: location }, replace: true });
   }, []);
 
   function handleDeleteClick() {
+    handleDeleteStore(storeId);
   }
 
   const handleAddGroceriesClick = () => {

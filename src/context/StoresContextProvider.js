@@ -11,7 +11,7 @@ export const StoresContext = createContext({
     updateStore: (id, {description, amount, date}) => {}
 });
 
-function storesReducer(state, action){
+const  storesReducer = (state, action) =>{
     let updatableStoreIndex;
     let deleteGroceryIndex;
     let updatableStore;
@@ -68,7 +68,7 @@ function storesReducer(state, action){
     }
 }
 
-export default function StoresContextProvider({children}){
+const  StoresContextProvider = ({children}) =>{
     const [storesState, dispatch] = useReducer(storesReducer, []);
 
     function addStore(storeData){
@@ -107,3 +107,5 @@ export default function StoresContextProvider({children}){
 
     return <StoresContext.Provider value={value}>{children}</StoresContext.Provider>
 }
+
+export default StoresContextProvider;

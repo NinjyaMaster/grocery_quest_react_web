@@ -1,16 +1,8 @@
 import { useState } from "react";
-import useStores from "../hooks/useStores";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { STORES_URL } from "../constants/network";
-import axios from '../api/axios';
-import useAuth from "../hooks/useAuth";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 
 const AddStore = () => {
-    const { auth } = useAuth();
-    const navigate = useNavigate();
-    const location = useLocation();
 
     const [storeName, setStoreName ] = useState("");
     const [groceryName1, setGroceryName1 ] = useState(""); 

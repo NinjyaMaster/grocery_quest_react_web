@@ -1,11 +1,9 @@
 import { useState } from "react";
-import useStores from "../hooks/useStores";
 import { Link, useParams } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 
 const AddGroceries = () => {
     const {storeId} = useParams();
-    const { stores } = useStores();
 
     const [groceryName1, setGroceryName1 ] = useState(""); 
     const [ groceryQty1, setGroceryQty1 ] = useState(1);
