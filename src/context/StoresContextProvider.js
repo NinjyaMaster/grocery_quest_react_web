@@ -1,14 +1,13 @@
-/* eslint-disable */
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, useMemo } from 'react';
 
 export const StoresContext = createContext({
   stores: [],
-  addStore: ({ description, amount, date }) => {},
-  addGroceries: ({ storeId, groceriesList }) => {},
-  deleteGrocery: ({ storeId, groceryId }) => {},
-  setStores: (store) => {},
-  deleteStore: (id) => {},
-  updateStore: (id, { description, amount, date }) => {},
+  addStore: ({ description, amount, date }) => {}, // eslint-disable-line
+  addGroceries: ({ storeId, groceriesList }) => {}, // eslint-disable-line
+  deleteGrocery: ({ storeId, groceryId }) => {}, // eslint-disable-line
+  setStores: (store) => {}, // eslint-disable-line
+  deleteStore: (id) => {}, // eslint-disable-line
+  updateStore: (id, { description, amount, date }) => {}, // eslint-disable-line
 });
 
 const storesReducer = (state, action) => {
@@ -17,6 +16,7 @@ const storesReducer = (state, action) => {
   let updatableStore;
   let updatedStore;
   let updatedStores;
+  let inverted;
 
   switch (action.type) {
     case 'ADD_STORE':
@@ -35,12 +35,12 @@ const storesReducer = (state, action) => {
       updatedStores[updatableStoreIndex] = updatedStore;
       return updatedStores;
     case 'SET':
-      const inverted = action.payload.reverse();
+      inverted = action.payload.reverse();
       return inverted;
     case 'UPDATE':
       updatableStoreIndex = state.findIndex((store) => store.id === action.payload.id);
       updatableStore = state[updatableStoreIndex];
-      //updatedItem = {...updatableStore, ...action.payload.data};
+      // updatedItem = {...updatableStore, ...action.payload.data};
       updatedStores = [...state];
       updatedStores[updatableStoreIndex] = action.payload.data;
       return updatedStores;
@@ -64,7 +64,7 @@ const storesReducer = (state, action) => {
   }
 };
 
-const StoresContextProvider = ({ children }) => {
+function StoresContextProvider({ children }) {
   const [storesState, dispatch] = useReducer(storesReducer, []);
 
   function addStore(storeData) {
@@ -74,7 +74,7 @@ const StoresContextProvider = ({ children }) => {
   function addGroceries(storeId, groceriesList) {
     dispatch({
       type: 'ADD_GROCERIES',
-      payload: { storeId: storeId, groceriesList: groceriesList },
+      payload: { storeId, groceriesList },
     });
   }
 
@@ -87,24 +87,27 @@ const StoresContextProvider = ({ children }) => {
   }
 
   function deleteGrocery(storeId, groceryId) {
-    dispatch({ type: 'DELETE_GROCERY', payload: { storeId: storeId, groceryId: groceryId } });
+    dispatch({ type: 'DELETE_GROCERY', payload: { storeId, groceryId } });
   }
 
   function updateStore(id, storeData) {
-    dispatch({ type: 'UPDATE', payload: { id: id, data: storeData } });
+    dispatch({ type: 'UPDATE', payload: { id, data: storeData } });
   }
 
-  const value = {
-    stores: storesState,
-    setStores: setStores,
-    addStore: addStore,
-    addGroceries: addGroceries,
-    deleteStore: deleteStore,
-    deleteGrocery: deleteGrocery,
-    updateStore: updateStore,
-  };
+  const value = useMemo(
+    () => ({
+      stores: storesState,
+      setStores,
+      addStore,
+      addGroceries,
+      deleteStore,
+      deleteGrocery,
+      updateStore,
+    }),
+    [storesState]
+  );
 
   return <StoresContext.Provider value={value}>{children}</StoresContext.Provider>;
-};
+}
 
 export default StoresContextProvider;
