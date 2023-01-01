@@ -1,8 +1,9 @@
-import React from "react";
-//import clsx from "clsx";
+/* eslint-disable */
+import React from 'react';
+// import clsx from "clsx";
 
 export default function Button(props) {
-  //const { children, outline, className, ...rest } = props;
+  // const { children, outline, className, ...rest } = props;
   const { children, ...rest } = props;
 
   // const classNames = clsx({
@@ -12,7 +13,7 @@ export default function Button(props) {
   //   },
   //   className
   // );
-  //<button className={classNames} {...rest}>
+  // <button className={classNames} {...rest}>
 
   return <button {...rest}>{children}</button>;
 }

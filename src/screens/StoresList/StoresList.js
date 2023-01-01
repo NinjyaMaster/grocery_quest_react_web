@@ -1,62 +1,65 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import useStores from "../../hooks/useStores"
-import { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
-import StoreItem from "./StoreItem";
+/* eslint-disable */
+import { useNavigate, useLocation, useOutletContext } from 'react-router-dom';
+import { useEffect } from 'react';
+import useAuth from '../../hooks/useAuth';
+import useStores from '../../hooks/useStores';
 
-const StoresList = () => {
-    const { setAuth } = useAuth();
-    const { stores, setStores } = useStores();
-    const navigate = useNavigate();
-    const [handlePostStore, handlePatchGroceries, handleGetStores, handleDeleteStore] = useOutletContext();
-    const location = useLocation();
+import StoreItem from './StoreItem';
 
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
+function StoresList() {
+  const { setAuth } = useAuth();
+  const { stores, setStores } = useStores();
+  const navigate = useNavigate();
+  const [handlePostStore, handlePatchGroceries, handleGetStores, handleDeleteStore] =
+    useOutletContext();
+  const location = useLocation();
 
-        handleGetStores(isMounted);
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
 
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
-    }, [])
+    handleGetStores(isMounted);
 
-    const logout = () => {
-        setAuth({});
-        setStores([]);
-        navigate('/login');
-    }
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
 
-    const handleAddStore = () => {
-        navigate('/add_store', { state: {from: location}, replace:true });
-    }
+  const logout = () => {
+    setAuth({});
+    setStores([]);
+    navigate('/login');
+  };
 
-    return (
-        <section>
-            <h1>Stores</h1>
-            <article>
-                <button onClick={handleAddStore}>Add Store</button>
-                <h2>Stores List</h2>
-                { stores?.length
-                    ? (
-                        <ul>
-                        {stores.map((store) =>
-                            <li key={store?.id}> <StoreItem key={store?.id}  store={store} handleDeleteStore={handleDeleteStore}/></li>
-                        )}
-                        </ul>
-                    ) : <p> No Stores. Please add stores </p>
+  const handleAddStore = () => {
+    navigate('/add_store', { state: { from: location }, replace: true });
+  };
 
-                }
-            </article>
-            <div className="flexGrow">
-                <button onClick={logout}>Sign Out</button>
-            </div>
-        </section>
-    )    
-
+  return (
+    <section>
+      <h1>Stores</h1>
+      <article>
+        <button onClick={handleAddStore}>Add Store</button>
+        <h2>Stores List</h2>
+        {stores?.length ? (
+          <ul>
+            {stores.map((store) => (
+              <li key={store?.id}>
+                {' '}
+                <StoreItem key={store?.id} store={store} handleDeleteStore={handleDeleteStore} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p> No Stores. Please add stores </p>
+        )}
+      </article>
+      <div className="flexGrow">
+        <button onClick={logout}>Sign Out</button>
+      </div>
+    </section>
+  );
 }
 
 export default StoresList;

@@ -1,8 +1,9 @@
+/* eslint-disable */
 import Register from './screens/Register';
 import Login from './screens/Login';
 import StoresLayout from './screens/StoresLayout';
 import StoresList from './screens/StoresList/StoresList';
-import StoreDetail from './screens/StoreDetail/StoreDetail'
+import StoreDetail from './screens/StoreDetail/StoreDetail';
 import AddStore from './screens/AddStore';
 import AddGroceries from './screens/AddGroceries';
 import AllowAnyLayout from './screens/AllowAnyLayout';
@@ -15,7 +16,6 @@ import { Routes, Route } from 'react-router-dom';
 // All file structure is from  https://youtu.be/oUZjO00NkhY
 
 function App() {
-
   return (
     <Routes>
       <Route path="/" element={<AllowAnyLayout />}>
@@ -26,10 +26,10 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
 
         {/* we want to protect these routes */}
-        <Route element={<RequireAuth  />}>
+        <Route element={<RequireAuth />}>
           <Route element={<StoresLayout />}>
             <Route path="/" element={<StoresList />} />
-            <Route path="/add_store" element={<AddStore />} />          
+            <Route path="/add_store" element={<AddStore />} />
             <Route path="/store/:storeId/" element={<StoreDetail />} />
             <Route path="/store/:storeId/add_groceries/" element={<AddGroceries />} />
           </Route>

@@ -1,11 +1,11 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from 'react-router-dom';
 
-const AllowAnyLayout = () => {
-    return (
-        <main className="App">
-            <Outlet />
-        </main>
-    )
+function AllowAnyLayout() {
+  return (
+    <main className="App">
+      <Outlet />
+    </main>
+  );
 }
 
-export default AllowAnyLayout
+export default AllowAnyLayout;

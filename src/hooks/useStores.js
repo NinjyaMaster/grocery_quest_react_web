@@ -1,8 +1,6 @@
-import { useContext } from "react";
-import { StoresContext } from "../context/StoresContextProvider";
+import { useContext } from 'react';
+import { StoresContext } from '../context/StoresContextProvider';
 
-const useStores = () => {
-    return useContext(StoresContext);
-}
+const useStores = () => useContext(StoresContext);
 
 export default useStores;

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';

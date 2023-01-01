@@ -1,10 +1,10 @@
 import React from 'react';
 import './index.css';
-import App from './App';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import App from './App';
 import { AuthProvider } from './context/AuthProvider';
 import StoresContextProvider from './context/StoresContextProvider';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
@@ -12,9 +12,9 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <StoresContextProvider>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
         </StoresContextProvider>
       </AuthProvider>
     </BrowserRouter>
