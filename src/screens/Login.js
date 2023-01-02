@@ -1,13 +1,14 @@
 /* eslint-disable */
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-
-import axios from '../api/axios';
+import { AxiosContext } from '../contexts/AxiosProvider';
 import { LOGIN_URL } from '../constants/network';
+import secureLocalStorage from 'react-secure-storage';
 
 function Login() {
-  const { setAuth } = useAuth();
+  const { setAuthState, logout } = useAuth();
+  const { publicAxios } = useContext(AxiosContext);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,38 +17,40 @@ function Login() {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [enteredEmail, setEnteredEmail] = useState('');
+  const [enteredPassword, setEnteredPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
     userRef.current.focus();
+
+    // call logout to clear all token and auth info
+    logout();
   }, []);
 
   useEffect(() => {
     setErrMsg('');
-  }, [email, password]);
+  }, [enteredEmail, enteredPassword]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(LOGIN_URL, {
-        email,
-        password,
+      const response = await publicAxios.post(LOGIN_URL, {
+        email: enteredEmail,
+        password: enteredPassword,
       });
-      const accessToken = response?.data?.tokens?.access;
-      const refreshToken = response?.data?.tokens?.refresh;
-      const username = response?.data?.username;
-      setAuth({
-        email,
-        password,
-        username,
-        refreshToken,
-        accessToken,
+
+      const { access, refresh } = response?.data?.tokens;
+      const { email, username } = response?.data;
+
+      setAuthState({
+        authenticated: true,
+        email: email,
+        username: username,
       });
-      setEmail('');
-      setPassword('');
+      secureLocalStorage.setItem('accessToken', access);
+      secureLocalStorage.setItem('refreshToken', refresh);
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
@@ -76,8 +79,8 @@ function Login() {
           id="email"
           ref={userRef}
           autoComplete="off"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
+          onChange={(e) => setEnteredEmail(e.target.value)}
+          value={enteredEmail}
           required
         />
 
@@ -85,8 +88,8 @@ function Login() {
         <input
           type="password"
           id="password"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
+          onChange={(e) => setEnteredPassword(e.target.value)}
+          value={enteredPassword}
           required
         />
         <button>Sign In</button>

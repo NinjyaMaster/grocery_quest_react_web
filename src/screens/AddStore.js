@@ -1,6 +1,8 @@
-/* eslint-disable */
-import { useState } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { AxiosContext } from '../contexts/AxiosProvider';
+import { STORES_URL } from '../constants/network';
+import useStores from '../hooks/useStores';
 
 function AddStore() {
   const [storeName, setStoreName] = useState('');
@@ -9,17 +11,19 @@ function AddStore() {
   const [groceryName2, setGroceryName2] = useState('');
   const [groceryQty2, setGroceryQty2] = useState(1);
   const [errMsg, setErrMsg] = useState('');
+  const { authAxios } = useContext(AxiosContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { addStore } = useStores();
 
   const STORE_GROCERY_REGEX = /^[A-z][ A-z0-9]{2,20}[A-z0-9]$/;
-
-  const [handlePostStore] = useOutletContext();
 
   const handleAddStoreSubmit = async (e) => {
     e.preventDefault();
     const enternedGroceries = [];
 
     if (!STORE_GROCERY_REGEX.test(storeName)) {
-      console.log('store name is wrong');
+      // console.log('store name is wrong');
       return;
     }
 
@@ -46,7 +50,22 @@ function AddStore() {
       is_completed: false,
       groceries: enternedGroceries,
     };
-    handlePostStore(bodyParameters);
+
+    try {
+      const res = await authAxios.post(STORES_URL, bodyParameters);
+      addStore(res.data);
+      navigate('/', { state: { from: location }, replace: true });
+    } catch (error) {
+      if (!error?.response) {
+        setErrMsg('need another message');
+      } else if (error.response?.status === 400) {
+        setErrMsg('need another message');
+      } else if (error.response?.status === 401) {
+        setErrMsg('need another message');
+      } else {
+        setErrMsg('need another message');
+      }
+    }
   };
 
   return (

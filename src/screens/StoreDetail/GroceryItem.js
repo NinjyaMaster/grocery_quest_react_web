@@ -1,22 +1,20 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
 import useStores from '../../hooks/useStores';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { GROCERY_URL } from '../../constants/network';
+import { AxiosContext } from '../../contexts/AxiosProvider';
 
 function GroceryItem(props) {
   const { grocery, storeId } = props;
-  const axiosPrivate = useAxiosPrivate();
   const { deleteGrocery } = useStores();
   const [errMsg, setErrMsg] = useState('');
+  const { authAxios } = useContext(AxiosContext);
 
-  const handleDeleteGroceryClick = async (e) => {
+  const handleDeleteGrocery = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axiosPrivate.delete(`${GROCERY_URL}${grocery.id}`);
-      console.log(JSON.stringify(response?.data));
-      // console.log(JSON.stringify(response));
+      await authAxios.delete(`${GROCERY_URL}${grocery.id}`);
       deleteGrocery(storeId, grocery.id);
     } catch (err) {
       if (!err?.response) {
@@ -38,7 +36,7 @@ function GroceryItem(props) {
       </p>
       <div className="name">{grocery.name}</div>
       <div className="id">{grocery.id}</div>
-      <button onClick={handleDeleteGroceryClick}>Delete</button>
+      <button onClick={handleDeleteGrocery}>Delete</button>
     </div>
   );
 }

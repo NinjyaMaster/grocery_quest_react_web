@@ -1,15 +1,18 @@
 /* eslint-disable */
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import useDeleteStoreAPI from '../../hooks/useDeleteStore';
 
 function StoreItem(props) {
-  const { store, handleDeleteStore } = props;
+  const { store } = props;
   const location = useLocation();
   const [errMsg, setErrMsg] = useState('');
+  const { errorMessage, deleteStoreAPI } = useDeleteStoreAPI();
 
   const handleStoreDeleteClick = async (e) => {
     e.preventDefault();
-    handleDeleteStore(store.id);
+    deleteStoreAPI(store.id);
+    console.log('error:', errorMessage);
   };
 
   return (

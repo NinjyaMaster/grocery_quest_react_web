@@ -1,9 +1,14 @@
-/* eslint-disable */
-import { useState } from 'react';
-import { Link, useParams, useOutletContext } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'; // eslint-disable-line
+import { AxiosContext } from '../contexts/AxiosProvider';
+import { STORES_URL } from '../constants/network';
+import useStores from '../hooks/useStores';
 
 function AddGroceries() {
   const { storeId } = useParams();
+
+  const { authAxios } = useContext(AxiosContext);
+  const { addGroceries } = useStores();
 
   const [groceryName1, setGroceryName1] = useState('');
   const [groceryQty1, setGroceryQty1] = useState(1);
@@ -11,11 +16,12 @@ function AddGroceries() {
   const [groceryQty2, setGroceryQty2] = useState(1);
   const [errMsg, setErrMsg] = useState('');
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const STORE_GROCERY_REGEX = /^[A-z][ A-z0-9]{2,20}[A-z0-9]$/;
 
-  const [handlePostStore, handlePatchGroceries] = useOutletContext();
-
-  const handleAddGroceriesSubmit = async (e) => {
+  const handleAddGroceries = async (e) => {
     e.preventDefault();
     const enternedGroceries = [];
 
@@ -42,8 +48,22 @@ function AddGroceries() {
       is_completed: false,
       groceries: enternedGroceries,
     };
-    console.log(bodyParameters);
-    handlePatchGroceries(storeId, bodyParameters);
+
+    try {
+      const res = await authAxios.patch(`${STORES_URL}${storeId}`, bodyParameters);
+      addGroceries(storeId, res.data.groceries);
+      navigate(`/store/${storeId}/`, { state: { from: location }, replace: true });
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('need another message');
+      } else if (err.response?.status === 400) {
+        setErrMsg('need another message');
+      } else if (err.response?.status === 401) {
+        setErrMsg('need another message');
+      } else {
+        setErrMsg('need another message');
+      }
+    }
   };
 
   return (
@@ -52,7 +72,7 @@ function AddGroceries() {
       <p className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
         {errMsg}
       </p>
-      <form onSubmit={handleAddGroceriesSubmit}>
+      <form onSubmit={handleAddGroceries}>
         <input
           id="groceryName1"
           type="text"

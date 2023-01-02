@@ -1,24 +1,37 @@
 /* eslint-disable */
-import { useNavigate, useLocation, useOutletContext } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useContext } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useStores from '../../hooks/useStores';
+import { AxiosContext } from '../../contexts/AxiosProvider';
+import { STORES_URL } from '../../constants/network';
 
 import StoreItem from './StoreItem';
 
 function StoresList() {
-  const { setAuth } = useAuth();
+  const { logout } = useAuth();
   const { stores, setStores } = useStores();
   const navigate = useNavigate();
-  const [handlePostStore, handlePatchGroceries, handleGetStores, handleDeleteStore] =
-    useOutletContext();
   const location = useLocation();
+  const { authAxios } = useContext(AxiosContext);
 
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
 
-    handleGetStores(isMounted);
+    const getStoresData = async () => {
+      try {
+        const res = await authAxios.get(STORES_URL);
+        const storesList = res.data;
+        setStores(storesList);
+      } catch (error) {
+        alert('Add Store Failed');
+        isMounted = false;
+        controller.abort();
+        return error;
+      }
+    };
+    getStoresData();
 
     return () => {
       isMounted = false;
@@ -26,9 +39,8 @@ function StoresList() {
     };
   }, []);
 
-  const logout = () => {
-    setAuth({});
-    setStores([]);
+  const handleLogout = () => {
+    logout();
     navigate('/login');
   };
 
@@ -47,7 +59,7 @@ function StoresList() {
             {stores.map((store) => (
               <li key={store?.id}>
                 {' '}
-                <StoreItem key={store?.id} store={store} handleDeleteStore={handleDeleteStore} />
+                <StoreItem key={store?.id} store={store} />
               </li>
             ))}
           </ul>
@@ -56,7 +68,7 @@ function StoresList() {
         )}
       </article>
       <div className="flexGrow">
-        <button onClick={logout}>Sign Out</button>
+        <button onClick={handleLogout}>Sign Out</button>
       </div>
     </section>
   );

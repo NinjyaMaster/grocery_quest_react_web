@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation, Link, useOutletContext } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 // import Navbar from "../components/Navbar.js";
-import Button from '../../components/Button.js';
-import useStores from '../../hooks/useStores.js';
-import GroceryItem from './GroceryItem.js';
+import Button from '../../components/Button';
+import useStores from '../../hooks/useStores';
+import GroceryItem from './GroceryItem';
+import useDeleteStoreAPI from '../../hooks/useDeleteStore';
 
 function StoreDetail() {
   const { storeId } = useParams();
@@ -13,26 +14,20 @@ function StoreDetail() {
   const [groceries, setGroceries] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const [
-    handlePostStore,
-    handlePatchGroceries,
-    handleGetStores,
-    handleDeleteStore,
-    handleDeleteGrocery,
-  ] = useOutletContext();
+  const { errorMessage, deleteStoreAPI } = useDeleteStoreAPI(); // eslint-disable-line
 
   useEffect(() => {
-    const currentStore = stores.find((store) => Number(store.id) === Number(storeId));
+    const currentStore = stores.find((oneStore) => Number(oneStore.id) === Number(storeId));
     setStore(currentStore);
     setGroceries(currentStore?.groceries);
     if (!currentStore) navigate('/', { state: { from: location }, replace: true });
   }, []);
 
-  function handleDeleteClick() {
-    handleDeleteStore(storeId);
+  function handleDelete() {
+    deleteStoreAPI(storeId);
   }
 
-  const handleAddGroceriesClick = () => {
+  const handleAddGroceries = () => {
     navigate(`/store/${storeId}/add_groceries/`, { state: { from: location }, replace: true });
   };
 
@@ -57,10 +52,10 @@ function StoreDetail() {
       )}
       <br />
 
-      <Button className="buttonInactive" onClick={handleDeleteClick}>
+      <Button className="buttonInactive" onClick={handleDelete}>
         Delete
       </Button>
-      <Button onClick={handleAddGroceriesClick} className="buttonInactive">
+      <Button onClick={handleAddGroceries} className="buttonInactive">
         Add Groceries
       </Button>
     </div>
