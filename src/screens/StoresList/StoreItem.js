@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useDeleteStoreAPI from '../../hooks/useDeleteStore';
@@ -6,13 +5,13 @@ import useDeleteStoreAPI from '../../hooks/useDeleteStore';
 function StoreItem(props) {
   const { store } = props;
   const location = useLocation();
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState(''); // eslint-disable-line
   const { errorMessage, deleteStoreAPI } = useDeleteStoreAPI();
 
   const handleStoreDeleteClick = async (e) => {
     e.preventDefault();
     deleteStoreAPI(store.id);
-    console.log('error:', errorMessage);
+    console.log('error:', errorMessage); // eslint-disable-line
   };
 
   return (
@@ -26,7 +25,9 @@ function StoreItem(props) {
           <div className="id">{store.id}</div>
         </div>
       </Link>
-      <button onClick={handleStoreDeleteClick}>Delete</button>
+      <button type="button" onClick={handleStoreDeleteClick}>
+        Delete
+      </button>
     </>
   );
 }

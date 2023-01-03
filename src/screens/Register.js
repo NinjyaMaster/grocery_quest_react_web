@@ -234,7 +234,9 @@ function Register() {
               Must match the first password input field.
             </p>
 
-            <button disabled={!!(!validUsername || !validPassword || !validMatch)}>Sign Up</button>
+            <button type="submit" disabled={!!(!validUsername || !validPassword || !validMatch)}>
+              Sign Up
+            </button>
           </form>
           <p>
             Already registered?

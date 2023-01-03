@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useContext } from 'react';
 import useAuth from '../../hooks/useAuth';
@@ -16,7 +15,7 @@ function StoresList() {
   const { authAxios } = useContext(AxiosContext);
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true; // eslint-disable-line
     const controller = new AbortController();
 
     const getStoresData = async () => {
@@ -24,8 +23,9 @@ function StoresList() {
         const res = await authAxios.get(STORES_URL);
         const storesList = res.data;
         setStores(storesList);
+        return res.data;
       } catch (error) {
-        alert('Add Store Failed');
+        alert('Add Store Failed'); // eslint-disable-line
         isMounted = false;
         controller.abort();
         return error;
@@ -52,7 +52,9 @@ function StoresList() {
     <section>
       <h1>Stores</h1>
       <article>
-        <button onClick={handleAddStore}>Add Store</button>
+        <button type="button" onClick={handleAddStore}>
+          Add Store
+        </button>
         <h2>Stores List</h2>
         {stores?.length ? (
           <ul>
@@ -68,7 +70,9 @@ function StoresList() {
         )}
       </article>
       <div className="flexGrow">
-        <button onClick={handleLogout}>Sign Out</button>
+        <button type="button" onClick={handleLogout}>
+          Sign Out
+        </button>
       </div>
     </section>
   );

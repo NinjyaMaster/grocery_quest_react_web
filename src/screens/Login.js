@@ -1,10 +1,10 @@
 /* eslint-disable */
 import { useRef, useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import secureLocalStorage from 'react-secure-storage';
 import useAuth from '../hooks/useAuth';
 import { AxiosContext } from '../contexts/AxiosProvider';
 import { LOGIN_URL } from '../constants/network';
-import secureLocalStorage from 'react-secure-storage';
 
 function Login() {
   const { setAuthState, logout } = useAuth();
@@ -92,7 +92,7 @@ function Login() {
           value={enteredPassword}
           required
         />
-        <button>Sign In</button>
+        <button type="submit">Sign In</button>
       </form>
       <p>
         Need an Account?

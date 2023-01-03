@@ -1,8 +1,6 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'; // eslint-disable-line
 // import Navbar from "../components/Navbar.js";
-import Button from '../../components/Button';
 import useStores from '../../hooks/useStores';
 import GroceryItem from './GroceryItem';
 import useDeleteStoreAPI from '../../hooks/useDeleteStore';
@@ -52,12 +50,12 @@ function StoreDetail() {
       )}
       <br />
 
-      <Button className="buttonInactive" onClick={handleDelete}>
+      <button type="button" className="buttonInactive" onClick={handleDelete}>
         Delete
-      </Button>
-      <Button onClick={handleAddGroceries} className="buttonInactive">
+      </button>
+      <button type="button" onClick={handleAddGroceries} className="buttonInactive">
         Add Groceries
-      </Button>
+      </button>
     </div>
   );
 }
