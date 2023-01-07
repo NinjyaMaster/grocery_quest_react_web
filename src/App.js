@@ -31,7 +31,7 @@ function App() {
             <Route path="/" element={<StoresList />} />
             <Route path="/add_store" element={<AddStore />} />
             <Route path="/store/:storeId/" element={<StoreDetail />} />
-            <Route path="/store/:storeId/add_groceries/" element={<AddGroceries />} />
+            <Route path="/store/add_groceries/:storeId/" element={<AddGroceries />} />
           </Route>
         </Route>
 

@@ -26,12 +26,14 @@ function StoreDetail() {
   }
 
   const handleAddGroceries = () => {
-    navigate(`/store/${storeId}/add_groceries/`, { state: { from: location }, replace: true });
+    navigate(`/store/add_groceries/${storeId}/`, { state: { from: location }, replace: true });
   };
 
   return (
     <div className="mailDetail">
-      <h1 className="subject">{store?.name}</h1>
+      <h1 className="subject" aria-label={store?.name}>
+        {store?.name}
+      </h1>
       <div className="senderInfo">
         <p className="sender">{store?.id}</p>
       </div>

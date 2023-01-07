@@ -68,7 +68,7 @@ function AddGroceries() {
 
   return (
     <div>
-      <div>Add Store</div>
+      <div aria-label="Add Groceries">Add Groceries</div>
       <p className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
         {errMsg}
       </p>
@@ -109,7 +109,9 @@ function AddGroceries() {
           className="form-textinput"
         />
         <br />
-        <input type="submit" value="Submit" className="buttonInactive" />
+        <button type="submit" className="buttonInactive">
+          Submit
+        </button>
       </form>
       <Link to="/">Cancel</Link>
     </div>

@@ -122,6 +122,7 @@ function Register() {
               id="username"
               ref={userRef}
               autoComplete="off"
+              placeholder="username"
               onChange={(e) => setUsername(e.target.value)}
               value={username}
               required
@@ -157,6 +158,7 @@ function Register() {
               autoComplete="off"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              placeholder="email"
               required
               aria-invalid={validEmail ? 'false' : 'true'}
               aria-describedby="emailnote"
@@ -184,6 +186,7 @@ function Register() {
               id="password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              placeholder="password"
               required
               aria-invalid={validPassword ? 'false' : 'true'}
               aria-describedby="pwdnote"
@@ -220,6 +223,7 @@ function Register() {
               id="confirm_password"
               onChange={(e) => setMatchPassword(e.target.value)}
               value={matchPassword}
+              placeholder="confirm password"
               required
               aria-invalid={validMatch ? 'false' : 'true'}
               aria-describedby="confirmnote"

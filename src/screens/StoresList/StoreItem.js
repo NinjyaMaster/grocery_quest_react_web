@@ -15,7 +15,7 @@ function StoreItem(props) {
   };
 
   return (
-    <>
+    <div data-testid={`${store.id}`}>
       <Link to={`${location.pathname}store/${store.id}/`}>
         <p className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
           {errMsg}
@@ -28,7 +28,7 @@ function StoreItem(props) {
       <button type="button" onClick={handleStoreDeleteClick}>
         Delete
       </button>
-    </>
+    </div>
   );
 }
 

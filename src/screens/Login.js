@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { useRef, useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+// secureLocalStorage fails in test. I use local storage only for test
 import secureLocalStorage from 'react-secure-storage';
 import useAuth from '../hooks/useAuth';
 import { AxiosContext } from '../contexts/AxiosProvider';
@@ -49,8 +50,11 @@ function Login() {
         email: email,
         username: username,
       });
+      // secureLocalStorage fails in test. I use local storage only for test
       secureLocalStorage.setItem('accessToken', access);
       secureLocalStorage.setItem('refreshToken', refresh);
+      // localStorage.setItem('accessToken', access);
+      // localStorage.setItem('refreshToken', refresh);
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
@@ -79,6 +83,7 @@ function Login() {
           id="email"
           ref={userRef}
           autoComplete="off"
+          placeholder="email"
           onChange={(e) => setEnteredEmail(e.target.value)}
           value={enteredEmail}
           required
@@ -88,6 +93,7 @@ function Login() {
         <input
           type="password"
           id="password"
+          placeholder="password"
           onChange={(e) => setEnteredPassword(e.target.value)}
           value={enteredPassword}
           required

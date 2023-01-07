@@ -1,4 +1,5 @@
 import { createContext, useState, useMemo } from 'react';
+// secureLocalStorage fails in test. I use local storage only for test
 import secureLocalStorage from 'react-secure-storage';
 
 const AuthContext = createContext({});
@@ -11,7 +12,9 @@ export function AuthProvider({ children }) {
   });
 
   const logout = () => {
+    // secureLocalStorage fails in test. I use local storage only for test
     secureLocalStorage.clear();
+    // localStorage.clear();
     setAuthState({
       authenticated: false,
       email: '',
